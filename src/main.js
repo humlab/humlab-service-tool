@@ -1,6 +1,7 @@
 const readYamlFile = require('read-yaml-file');
 const { color, log, red, green, cyan, cyanBright } = require('console-log-colors');
 const fs = require('fs');
+require('dotenv').config();
 
 switch(process.argv[2]) {
     case "list":
@@ -12,13 +13,12 @@ switch(process.argv[2]) {
 
 function listServices(verbose = false) {
 
-    const servicesMasterDirectory = "./data";
+    const servicesMasterDirectory = process.env.SERVICES_MASTER_DIRECTORY;
     let dirFiles = fs.readdirSync(servicesMasterDirectory);
 
     dirFiles.forEach(dir => {
-        let isDirectory = fs.lstatSync(servicesMasterDirectory+"/"+dir).isDirectory();
+        let isDirectory = fs.lstatSync(servicesMasterDirectory+"/"+dir).isDirectory() || fs.lstatSync(servicesMasterDirectory+"/"+dir).isSymbolicLink();
         if(isDirectory) {
-
             if(fs.existsSync(servicesMasterDirectory+"/"+dir+"/docker-compose.yml")) {
                 readYamlFile(servicesMasterDirectory+"/"+dir+"/docker-compose.yml").then(data => {
                     console.log(green(dir));

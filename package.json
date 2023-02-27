@@ -10,6 +10,7 @@
   "license": "ISC",
   "dependencies": {
     "console-log-colors": "^0.4.0",
+    "dotenv": "^16.0.3",
     "read-yaml-file": "^2.1.0"
   }
 }
